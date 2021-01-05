@@ -51,13 +51,12 @@ class SiswaController extends Controller
             'alamat' => 'required',
             'penghasilan_ortu' => 'required',
             'penerima_kks' => 'required',
-            'siswa_id' => 'required',
             'r_mtk' => 'required',
             'r_bindo' => 'required',
             'r_bing' => 'required',
             'r_mapel_produktif' => 'required',
         ]);
-        Siswa::create([
+        $siswa = Siswa::create([
             'nama' => $req->nama,
             'nisn' => $req->nisn,
             'jenis_kelamin' => $req->jenis_kelamin,
@@ -67,7 +66,7 @@ class SiswaController extends Controller
             'penerima_kks' => $req->penerima_kks,
         ]);
         Nilai::create([
-            'siswa_id' => $req->siswa_id,
+            'siswa_id' => $siswa->id,
             'r_mtk' => $req->r_mtk,
             'r_bindo' => $req->r_bindo,
             'r_bing' => $req->r_bing,

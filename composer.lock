@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b5b487c78defbb7ec78f1e632805560",
+    "content-hash": "6a43e4ad1a1553e1941fc75ca3c37aff",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -828,6 +828,86 @@
                 "source": "https://github.com/guzzle/psr7/tree/1.7.0"
             },
             "time": "2020-09-30T07:37:11+00:00"
+        },
+        {
+            "name": "juliardi/c45",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/juliardi/C45.git",
+                "reference": "e54bff7b08525d6a0a7396fa18e2c201f8734ff5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/juliardi/C45/zipball/e54bff7b08525d6a0a7396fa18e2c201f8734ff5",
+                "reference": "e54bff7b08525d6a0a7396fa18e2c201f8734ff5",
+                "shasum": ""
+            },
+            "require": {
+                "juliardi/data-reader": "^1.0",
+                "php": ">=5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "C45\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Muhammad Safri Juliardi",
+                    "email": "ardi93@gmail.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/juliardi/C45/issues",
+                "source": "https://github.com/juliardi/C45/tree/master"
+            },
+            "time": "2018-05-20T07:08:08+00:00"
+        },
+        {
+            "name": "juliardi/data-reader",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/juliardi/data-reader.git",
+                "reference": "839c595ac8461de3d0d96081c1b0d47beb6e46d1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/juliardi/data-reader/zipball/839c595ac8461de3d0d96081c1b0d47beb6e46d1",
+                "reference": "839c595ac8461de3d0d96081c1b0d47beb6e46d1",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "5.5.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DataReader\\": "src/",
+                    "Test\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Muhammad Safri Juliardi",
+                    "email": "ardi93@gmail.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/juliardi/data-reader/issues",
+                "source": "https://github.com/juliardi/data-reader/tree/master"
+            },
+            "time": "2019-04-29T10:11:34+00:00"
         },
         {
             "name": "laravel/framework",

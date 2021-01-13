@@ -6,6 +6,7 @@ use App\Model\Nilai;
 use App\Model\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use C45\C45 as C45AJA;
 
 class SiswaController extends Controller
 {
@@ -16,6 +17,37 @@ class SiswaController extends Controller
      */
     public function index()
     {
+        $filename = \public_path() . '/csv/Data_Training.csv';
+        // \dd($filename);
+        $c45 = new C45AJA([
+            'targetAttribute' => 'beasiswa',
+            'trainingFile' => $filename,
+            'splitCriterion' => C45AJA::SPLIT_GAIN,
+        ]);
+        $tree = $c45->buildTree();
+        $treeString = $tree->toString();
+        $testingData = [
+            // Tidak,B+,B+,B+,B+,Cukup,Tidak
+            'penerima_kks' => 'punya',
+            'r_mtk' => 'B+',
+            'b_indo' => 'B+',
+            'b_ing' => 'B+',
+            'r_mapel_produktif' => 'B+',
+            'penghasilan_ortu' => 'Cukup',
+        ];
+        $testingData2 = [
+            // Tidak,B+,B+,B+,B+,Cukup,Tidak
+            'penerima_kks' => 'tidak punya',
+            'r_mtk' => 'B-',
+            'b_indo' => 'B-',
+            'b_ing' => 'B-',
+            'r_mapel_produktif' => 'B+',
+            'penghasilan_ortu' => 'rendah',
+        ];
+        // \dd($testingData);
+
+        $hasil = $tree->classify($testingData, $testingData2);
+        \dd($hasil);
         $siswa = Siswa::query()->get();
         return \view('siswa.index', \compact('siswa'));
         // if (Auth::check()) {
@@ -56,21 +88,22 @@ class SiswaController extends Controller
             'r_bing' => 'required',
             'r_mapel_produktif' => 'required',
         ]);
+        // \dd($req->all());
         $siswa = Siswa::create([
             'nama' => $req->nama,
             'nisn' => $req->nisn,
             'jenis_kelamin' => $req->jenis_kelamin,
             'kelas' => $req->kelas,
             'alamat' => $req->alamat,
-            'penghasilan_ortu' => $req->penghasilan_ortu,
-            'penerima_kks' => $req->penerima_kks,
+            'penghasilan_ortu' => \strtolower($req->penghasilan_ortu),
+            'penerima_kks' => \strtolower($req->penerima_kks),
         ]);
         Nilai::create([
             'siswa_id' => $siswa->id,
-            'r_mtk' => $req->r_mtk,
-            'r_bindo' => $req->r_bindo,
-            'r_bing' => $req->r_bing,
-            'r_mapel_produktif' => $req->r_mapel_produktif,
+            'r_mtk' => \strtoupper($req->r_mtk),
+            'r_bindo' => \strtoupper($req->r_bindo),
+            'r_bing' => \strtoupper($req->r_bing),
+            'r_mapel_produktif' => \strtoupper($req->r_mapel_produktif),
         ]);
         return \redirect()->route('siswa.index')->with(['msg' => "Berhasil menambah data siswa, nama: $req->nama dengan nisn : $req->nisn"]);
     }

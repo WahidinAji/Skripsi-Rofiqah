@@ -128,6 +128,21 @@
                             </tr>
                         </tfoot>
                         <tbody>
+                            @forelse ($siswa as $s)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $s->nisn }}</td>
+                                <td>{{ $s->nama }}</td>
+                                <td>{{ $s->jenis_kelamin }}</td>
+                                <td>{{ $s->kelas }}</td>
+                                <td>{{ $s->penerima_kks }}</td>
+                                <td>{{ $s->penghasilan_ortu }}</td>
+                                <td>
+                                    <a href="edit-siswa.html" class="btn btn-outline-primary">Edit</a>
+                                    <a href="#" class="btn btn-outline-danger">Hapus</a>
+                                </td>
+                            </tr>
+                            @empty
                             <tr>
                                 <td scope="row">1</td>
                                 <td>System Architect</td>
@@ -141,6 +156,7 @@
                                     <a href="#" class="btn btn-outline-danger">Hapus</a>
                                 </td>
                             </tr>
+                            @endforelse
                         </tbody>
                     </table>
                     <a href="{{ URL::route('siswa.create') }}" class="btn btn-primary">Tambah</a>

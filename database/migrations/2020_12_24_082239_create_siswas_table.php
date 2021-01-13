@@ -21,7 +21,7 @@ class CreateSiswasTable extends Migration
             $table->string('kelas');
             $table->string('alamat');
             $table->string('penghasilan_ortu');
-            $table->enum('penerima_kks', ['1', '0']);
+            $table->enum('penerima_kks', ['punya', 'tidak punya']);
             $table->string('beasiswa')->nullable();
             $table->timestamps();
         });

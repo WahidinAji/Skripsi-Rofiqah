@@ -16,10 +16,10 @@ class CreateNilaisTable extends Migration
         Schema::create('nilais', function (Blueprint $table) {
             $table->id();
             $table->foreignId('siswa_id')->constrained('siswas');
-            $table->char('r_mtk', 4);
-            $table->char('r_bindo', 4);
-            $table->char('r_bing', 4);
-            $table->char('r_mapel_produktif', 4);
+            $table->string('r_mtk');
+            $table->string('r_bindo');
+            $table->string('r_bing');
+            $table->string('r_mapel_produktif');
             $table->timestamps();
         });
     }

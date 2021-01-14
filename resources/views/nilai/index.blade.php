@@ -45,7 +45,7 @@
                                 <td>{{ $nilai->r_bing }}</td>
                                 <td>{{ $nilai->r_mapel_produktif }}</td>
                                 <td>
-                                    <a href="edit-siswa.html" class="btn btn-outline-primary">Edit</a>
+                                    <a href="{{ URL::route('siswa.update',$nilai->id) }}" class="btn btn-outline-primary">Edit</a>
                                     <a href="#" class="btn btn-outline-danger">Hapus</a>
                                 </td>
                             </tr>

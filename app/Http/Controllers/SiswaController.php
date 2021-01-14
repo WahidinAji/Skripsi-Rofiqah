@@ -17,37 +17,36 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        $filename = \public_path() . '/csv/Data_Training.csv';
-        // \dd($filename);
-        $c45 = new C45AJA([
-            'targetAttribute' => 'beasiswa',
-            'trainingFile' => $filename,
-            'splitCriterion' => C45AJA::SPLIT_GAIN,
-        ]);
-        $tree = $c45->buildTree();
-        $treeString = $tree->toString();
-        $testingData = [
-            // Tidak,B+,B+,B+,B+,Cukup,Tidak
-            'penerima_kks' => 'punya',
-            'r_mtk' => 'B+',
-            'b_indo' => 'B+',
-            'b_ing' => 'B+',
-            'r_mapel_produktif' => 'B+',
-            'penghasilan_ortu' => 'Cukup',
-        ];
-        $testingData2 = [
-            // Tidak,B+,B+,B+,B+,Cukup,Tidak
-            'penerima_kks' => 'tidak punya',
-            'r_mtk' => 'B-',
-            'b_indo' => 'B-',
-            'b_ing' => 'B-',
-            'r_mapel_produktif' => 'B+',
-            'penghasilan_ortu' => 'rendah',
-        ];
-        // \dd($testingData);
+        // $filename = \public_path() . '/csv/Data_Training.csv';
+        // // \dd($filename);
+        // $c45 = new C45AJA([
+        //     'targetAttribute' => 'beasiswa',
+        //     'trainingFile' => $filename,
+        //     'splitCriterion' => C45AJA::SPLIT_GAIN,
+        // ]);
+        // $tree = $c45->buildTree();
+        // $treeString = $tree->toString();
+        // $testingData = [
+        //     // Tidak,B+,B+,B+,B+,Cukup,Tidak
+        //     'penerima_kks' => 'punya',
+        //     'r_mtk' => 'B+',
+        //     'b_indo' => 'B+',
+        //     'b_ing' => 'B+',
+        //     'r_mapel_produktif' => 'B+',
+        //     'penghasilan_ortu' => 'Cukup',
+        // ];
+        // $testingData2 = [
+        //     // Tidak,B+,B+,B+,B+,Cukup,Tidak
+        //     'penerima_kks' => 'tidak punya',
+        //     'r_mtk' => 'B-',
+        //     'b_indo' => 'B-',
+        //     'b_ing' => 'B-',
+        //     'r_mapel_produktif' => 'B+',
+        //     'penghasilan_ortu' => 'rendah',
+        // ];
+        // $hasil = $tree->classify($testingData, $testingData2);
+        // \dd($hasil);
 
-        $hasil = $tree->classify($testingData, $testingData2);
-        \dd($hasil);
         $siswa = Siswa::query()->get();
         return \view('siswa.index', \compact('siswa'));
         // if (Auth::check()) {
@@ -89,6 +88,28 @@ class SiswaController extends Controller
             'r_mapel_produktif' => 'required',
         ]);
         // \dd($req->all());
+        $filename = \public_path() . '/csv/Data_Training.csv';
+        // \dd($filename);
+        $c45 = new C45AJA([
+            'targetAttribute' => 'beasiswa',
+            'trainingFile' => $filename,
+            'splitCriterion' => C45AJA::SPLIT_GAIN,
+        ]);
+        $tree = $c45->buildTree();
+        $treeString = $tree->toString();
+        $data = [
+            // Tidak,B+,B+,B+,B+,Cukup,Tidak
+            'penerima_kks' => $req->penerima_kks,
+            'r_mtk' => $req->r_mtk,
+            'r_bindo' => $req->r_bindo,
+            'r_bing' => $req->r_bing,
+            'r_mapel_produktif' => $req->r_mapel_produktif,
+            'penghasilan_ortu' => $req->penghasilan_ortu,
+        ];
+        // \dd($testingData);
+
+        $hasil = $tree->classify($data);
+        \dd($hasil);
         $siswa = Siswa::create([
             'nama' => $req->nama,
             'nisn' => $req->nisn,
@@ -97,6 +118,7 @@ class SiswaController extends Controller
             'alamat' => $req->alamat,
             'penghasilan_ortu' => \strtolower($req->penghasilan_ortu),
             'penerima_kks' => \strtolower($req->penerima_kks),
+            'beasiswa' => $hasil,
         ]);
         Nilai::create([
             'siswa_id' => $siswa->id,
@@ -142,13 +164,34 @@ class SiswaController extends Controller
     {
         $this->validate($req, [
             'nama' => 'required',
-            'nisn' => 'required|unique:siswas',
+            'nisn' => 'required',
             'jenis_kelamin' => 'required',
             'kelas' => 'required',
             'alamat' => 'required',
             'penghasilan_ortu' => 'required',
             'penerima_kks' => 'required',
         ]);
+        $filename = \public_path() . '/csv/Data_Training.csv';
+        // \dd($filename);
+        $c45 = new C45AJA([
+            'targetAttribute' => 'beasiswa',
+            'trainingFile' => $filename,
+            'splitCriterion' => C45AJA::SPLIT_GAIN,
+        ]);
+        $tree = $c45->buildTree();
+        $treeString = $tree->toString();
+        $testingData = [
+            // Tidak,B+,B+,B+,B+,Cukup,Tidak
+            'penerima_kks' => $req->penerima_kks,
+            'r_mtk' => $req->r_mtk,
+            'r_bindo' => $req->r_bindo,
+            'r_bing' => $req->r_bing,
+            'r_mapel_produktif' => $req->r_mapel_produktif,
+            'penghasilan_ortu' => $req->penghasilan_ortu,
+        ];
+        // \dd($testingData);
+        $hasil = $tree->classify($testingData);
+        // \dd($hasil);
         $siswa = Siswa::find($id);
         $siswa->nama = $req->nama;
         $siswa->nisn = $req->nisn;
@@ -157,7 +200,9 @@ class SiswaController extends Controller
         $siswa->alamat = $req->alamat;
         $siswa->penghasilan_ortu = $req->penghasilan_ortu;
         $siswa->penerima_kks = $req->penerima_kks;
+        $siswa->beasiswa = $hasil;
         $siswa->save();
+        return \redirect()->route('siswa.index')->with(['msg' => "Berhasil merubah data siswa $req->nama"]);
     }
 
     /**

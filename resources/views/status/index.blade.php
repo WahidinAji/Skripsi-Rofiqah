@@ -3,14 +3,6 @@
 <main>
     <div class="container-fluid">
         <div class="card mb-4 mt-4">
-            @if(session('msg'))
-                <div class="alert alert-success" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    {{ session('msg') }}
-                </div>
-            @endif
             <div class="card-header">
                 <i class="fas fa-table mr-1"></i>
                 DataTable Example
@@ -25,9 +17,7 @@
                                 <th scope="col" class="text-center align-middle">Nama</th>
                                 <th scope="col" class="text-center align-middle">Jenis</th>
                                 <th scope="col" class="text-center align-middle">Kelas</th>
-                                <th scope="col" class="text-center align-middle">Penerima</th>
-                                <th scope="col" class="text-center align-middle">Penghasilan</th>
-                                <th scope="col" class="text-center align-middle">Aksi</th>
+                                <th scope="col" class="text-center align-middle">Status</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -37,13 +27,11 @@
                                 <th scope="col" class="text-center align-middle">Siswa</th>
                                 <th scope="col" class="text-center align-middle">Kelamin</th>
                                 <th scope="col" class="text-center align-middle">Siswa</th>
-                                <th scope="col" class="text-center align-middle">KKS</th>
-                                <th scope="col" class="text-center align-middle">Orang Tua</th>
-                                <th scope="col" class="text-center align-middle">Aksi</th>
+                                <th scope="col" class="text-center align-middle">Beasiswa</th>
                             </tr>
                         </tfoot>
                         <tbody>
-                            @forelse ($siswa as $s)
+                            @forelse ($status as $s)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $s->nisn }}</td>
@@ -54,20 +42,7 @@
                                 <td>Perempuan</td>
                                 @endif
                                 <td>{{ $s->kelas }}</td>
-                                <td>{{ $s->penerima_kks }}</td>
-                                <td>{{ $s->penghasilan_ortu }}</td>
-                                <td>
-                                    <a href="{{ URL::route('siswa.edit',$s->id) }}" class="btn btn-outline-primary">Edit</a>
-                                    <form action="{{ URL::route('siswa.destroy',$s->id) }}"
-                                        method="POST" class="btn">
-                                        @method('delete')
-                                        @csrf
-                                        <button class="btn btn-outline-danger">
-                                            Hapus
-                                        </button>
-                                    </form>
-                                    <!-- <a href="#" class="btn btn-outline-danger">Hapus</a> -->
-                                </td>
+                                <td>{{ $s->beasiswa }}</td>
                             </tr>
                             @empty
                             <tr>
@@ -79,6 +54,7 @@
                         </tbody>
                     </table>
                     <a href="{{ URL::route('siswa.create') }}" class="btn btn-primary">Tambah</a>
+                    <a href="{{ URL::route('pdf') }}" class="btn btn-primary">PDF</a>
                 </div>
             </div>
         </div>

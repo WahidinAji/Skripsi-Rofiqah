@@ -3,6 +3,14 @@
 <main>
     <div class="container-fluid">
         <div class="card mb-4 mt-4">
+            @if(session('msg'))
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{ session('msg') }}
+                </div>
+            @endif
             <div class="card-header">
                 <i class="fas fa-table mr-1"></i>
                 DataTable Example
@@ -45,19 +53,13 @@
                                 <td>{{ $nilai->r_bing }}</td>
                                 <td>{{ $nilai->r_mapel_produktif }}</td>
                                 <td>
-                                    <a href="{{ URL::route('siswa.update',$nilai->id) }}" class="btn btn-outline-primary">Edit</a>
-                                    <a href="#" class="btn btn-outline-danger">Hapus</a>
+                                    <a href="{{ URL::route('nilai.edit',$nilai->id) }}" class="btn btn-outline-primary">Edit</a>
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
-                                <td>61</td>
-                                <td>
-                                    <a href="edit-siswa.html" class="btn btn-outline-primary">Edit</a>
-                                    <a href="#" class="btn btn-outline-danger">Hapus</a>
+                                <td colspan="8" class="text-center">
+                                    <h2><strong>Data kosong!!</strong></h2>
                                 </td>
                             </tr>
                             @endforelse

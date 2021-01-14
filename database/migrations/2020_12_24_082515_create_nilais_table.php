@@ -15,7 +15,7 @@ class CreateNilaisTable extends Migration
     {
         Schema::create('nilais', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('siswa_id')->constrained('siswas');
+            $table->foreignId('siswa_id')->constrained('siswas')->onDelete('cascade');
             $table->string('r_mtk');
             $table->string('r_bindo');
             $table->string('r_bing');

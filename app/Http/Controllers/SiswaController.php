@@ -28,25 +28,15 @@ class SiswaController extends Controller
         // $treeString = $tree->toString();
         // $testingData = [
         //     // Tidak,B+,B+,B+,B+,Cukup,Tidak
-        //     'penerima_kks' => 'punya',
-        //     'r_mtk' => 'B+',
-        //     'b_indo' => 'B+',
+        //     'penerima_kks' => 'tidak punya',
+        //     'r_mtk' => 'B',
+        //     'b_indo' => 'B',
         //     'b_ing' => 'B+',
-        //     'r_mapel_produktif' => 'B+',
+        //     'r_mapel_produktif' => 'B',
         //     'penghasilan_ortu' => 'Cukup',
         // ];
-        // $testingData2 = [
-        //     // Tidak,B+,B+,B+,B+,Cukup,Tidak
-        //     'penerima_kks' => 'tidak punya',
-        //     'r_mtk' => 'B-',
-        //     'b_indo' => 'B-',
-        //     'b_ing' => 'B-',
-        //     'r_mapel_produktif' => 'B+',
-        //     'penghasilan_ortu' => 'rendah',
-        // ];
-        // $hasil = $tree->classify($testingData, $testingData2);
+        // $hasil = $tree->classify($testingData);
         // \dd($hasil);
-
         $siswa = Siswa::query()->get();
         return \view('siswa.index', \compact('siswa'));
         // if (Auth::check()) {
@@ -88,7 +78,7 @@ class SiswaController extends Controller
             'r_mapel_produktif' => 'required',
         ]);
         // \dd($req->all());
-        $filename = \public_path() . '/csv/Data_Training.csv';
+        $filename = \public_path() . '/csv/Data_Training.csv'; //DATA TRAINING
         // \dd($filename);
         $c45 = new C45AJA([
             'targetAttribute' => 'beasiswa',
@@ -99,22 +89,42 @@ class SiswaController extends Controller
         $treeString = $tree->toString();
         $data = [
             // Tidak,B+,B+,B+,B+,Cukup,Tidak
-            'penerima_kks' => $req->penerima_kks,
-            'r_mtk' => $req->r_mtk,
-            'r_bindo' => $req->r_bindo,
-            'r_bing' => $req->r_bing,
-            'r_mapel_produktif' => $req->r_mapel_produktif,
-            'penghasilan_ortu' => $req->penghasilan_ortu,
+            'penerima_kks' => \strtolower($req->penerima_kks),
+            'r_mtk' => \strtoupper($req->r_mtk),
+            'r_bindo' => \strtoupper($req->r_bindo),
+            'r_bing' => \strtoupper($req->r_bing),
+            'r_mapel_produktif' => \strtoupper($req->r_mapel_produktif),
+            'penghasilan_ortu' => \strtolower($req->penghasilan_ortu),
         ];
         // \dd($testingData);
 
         $hasil = $tree->classify($data);
-        \dd($hasil);
+
+        // $filename = \public_path() . '/csv/Data_Training.csv';
+        // // \dd($filename);
+        // $c45 = new C45AJA([
+        //     'targetAttribute' => 'beasiswa',
+        //     'trainingFile' => $filename,
+        //     'splitCriterion' => C45AJA::SPLIT_GAIN,
+        // ]);
+        // $tree = $c45->buildTree();
+        // $treeString = $tree->toString();
+        // $testingData = [
+        //     // Tidak,B+,B+,B+,B+,Cukup,Tidak
+        //     'penerima_kks' => 'tidak punya',
+        //     'r_mtk' => 'B',
+        //     'b_indo' => 'B',
+        //     'b_ing' => 'B+',
+        //     'r_mapel_produktif' => 'B',
+        //     'penghasilan_ortu' => 'Cukup',
+        // ];
+        // $hasil2 = $tree->classify($testingData);
+        // \dd($hasil, $hasil2);
         $siswa = Siswa::create([
             'nama' => $req->nama,
             'nisn' => $req->nisn,
             'jenis_kelamin' => $req->jenis_kelamin,
-            'kelas' => $req->kelas,
+            'kelas' => \strtoupper($req->kelas),
             'alamat' => $req->alamat,
             'penghasilan_ortu' => \strtolower($req->penghasilan_ortu),
             'penerima_kks' => \strtolower($req->penerima_kks),
@@ -128,17 +138,6 @@ class SiswaController extends Controller
             'r_mapel_produktif' => \strtoupper($req->r_mapel_produktif),
         ]);
         return \redirect()->route('siswa.index')->with(['msg' => "Berhasil menambah data siswa, nama: $req->nama dengan nisn : $req->nisn"]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Model\Siswa  $siswa
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Siswa $siswa)
-    {
-        //
     }
 
     /**
@@ -180,26 +179,26 @@ class SiswaController extends Controller
         ]);
         $tree = $c45->buildTree();
         $treeString = $tree->toString();
-        $testingData = [
+        $data = [
             // Tidak,B+,B+,B+,B+,Cukup,Tidak
-            'penerima_kks' => $req->penerima_kks,
-            'r_mtk' => $req->r_mtk,
-            'r_bindo' => $req->r_bindo,
-            'r_bing' => $req->r_bing,
-            'r_mapel_produktif' => $req->r_mapel_produktif,
-            'penghasilan_ortu' => $req->penghasilan_ortu,
+            'penerima_kks' => \strtolower($req->penerima_kks),
+            'r_mtk' => \strtoupper($req->r_mtk),
+            'r_bindo' => \strtoupper($req->r_bindo),
+            'r_bing' => \strtoupper($req->r_bing),
+            'r_mapel_produktif' => \strtoupper($req->r_mapel_produktif),
+            'penghasilan_ortu' => \strtolower($req->penghasilan_ortu),
         ];
         // \dd($testingData);
-        $hasil = $tree->classify($testingData);
+        $hasil = $tree->classify($data);
         // \dd($hasil);
         $siswa = Siswa::find($id);
         $siswa->nama = $req->nama;
         $siswa->nisn = $req->nisn;
         $siswa->jenis_kelamin = $req->jenis_kelamin;
-        $siswa->kelas = $req->kelas;
+        $siswa->kelas = \strtoupper($req->kelas);
         $siswa->alamat = $req->alamat;
-        $siswa->penghasilan_ortu = $req->penghasilan_ortu;
-        $siswa->penerima_kks = $req->penerima_kks;
+        $siswa->penghasilan_ortu = \strtolower($req->penghasilan_ortu);
+        $siswa->penerima_kks = \strtolower($req->penerima_kks);
         $siswa->beasiswa = $hasil;
         $siswa->save();
         return \redirect()->route('siswa.index')->with(['msg' => "Berhasil merubah data siswa $req->nama"]);
@@ -214,9 +213,7 @@ class SiswaController extends Controller
     public function destroy($id)
     {
         $siswa = Siswa::find($id);
-        $nilai = Nilai::find($siswa);
-        $nilai->delete();
         $siswa->delete();
-        return \redirect()->back()->with(['msg' => 'berhasil menghapus data siswa']);
+        return \redirect()->back()->with(['msg' => "berhasil menghapus data siswa $siswa->nama"]);
     }
 }

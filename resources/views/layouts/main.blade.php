@@ -59,7 +59,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></i></div>
                                 Tambah Data
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link {{ Request::url() == url('status-beasiswa') ? 'active' : '' }}" href="{{URL::route('status.index')}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Status Beasiswa
                             </a>

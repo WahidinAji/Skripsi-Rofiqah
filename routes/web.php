@@ -22,3 +22,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('siswa', 'SiswaController');
 Route::resource('nilai', 'NilaiController');
+Route::get('status-beasiswa','BeasiswaController@index')->name('status.index');
+Route::get('pdf','BeasiswaController@export_pdf')->name('pdf');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Model\Siswa;
 use PDF;
+use Illuminate\Support\Facades\Auth;
 
 class BeasiswaController extends Controller
 {

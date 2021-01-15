@@ -6,6 +6,7 @@ use App\Model\Nilai;
 use App\Model\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use C45\C45 as C45AJA;
 
 class NilaiController extends Controller

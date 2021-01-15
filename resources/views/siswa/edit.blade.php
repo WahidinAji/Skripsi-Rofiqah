@@ -84,7 +84,10 @@
                     <div class="form-group row">
                         <label for="inputpot" class="col-sm-3 col-form-label">Penghasilan Orang Tua</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control @error('penghasilan_ortu') is-invalid @enderror" id="inputpot" name="penghasilan_ortu" value="{{ $siswa->penghasilan_ortu }}">
+                            <select class="form-control @error('penghasilan_ortu') is-invalid @enderror" id="inputpot" name="penghasilan_ortu">
+                                <option disable>pilih kategori</option>
+                                <option value="{{$siswa->penghasilan_ortu}}" {{$siswa->penghasilan_ortu ? 'selected' : null}}>{{$siswa->penghasilan_ortu}}</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">

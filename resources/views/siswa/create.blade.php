@@ -77,10 +77,22 @@
                             </div>
                         </div>
                     </fieldset>
-                    <div class="form-group row">
+                    <!-- <div class="form-group row">
                         <label for="inputpot" class="col-sm-3 col-form-label">Penghasilan Orang Tua</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control @error('penghasilan_ortu') is-invalid @enderror" id="inputpot" name="penghasilan_ortu" value="{{ old('penghasilan_ortu') }}">
+                        </div>
+                    </div> -->
+                    <div class="form-group row">
+                        <label for="inputpot" class="col-sm-3 col-form-label">Penghasilan Orang Tua</label>
+                        <div class="col-sm-9">
+                            <select class="form-control @error('penghasilan_ortu') is-invalid @enderror" id="inputpot" name="penghasilan_ortu">
+                                <option disable selected>pilih kategori</option>
+                                <option value="rendah">Rendah</option>
+                                <option value="cukup">Cukup</option>
+                                <option value="rata-rata">Rata - rata</option>
+                                <option value="tinggi">Tinggi</option>
+                            </select>
                         </div>
                     </div>
                     <h3 class="mb-3"><strong>Nilai siswa</strong></h3>

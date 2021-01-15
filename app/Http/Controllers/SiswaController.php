@@ -17,33 +17,12 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        // $filename = \public_path() . '/csv/Data_Training.csv';
-        // // \dd($filename);
-        // $c45 = new C45AJA([
-        //     'targetAttribute' => 'beasiswa',
-        //     'trainingFile' => $filename,
-        //     'splitCriterion' => C45AJA::SPLIT_GAIN,
-        // ]);
-        // $tree = $c45->buildTree();
-        // $treeString = $tree->toString();
-        // $testingData = [
-        //     // Tidak,B+,B+,B+,B+,Cukup,Tidak
-        //     'penerima_kks' => 'tidak punya',
-        //     'r_mtk' => 'B',
-        //     'b_indo' => 'B',
-        //     'b_ing' => 'B+',
-        //     'r_mapel_produktif' => 'B',
-        //     'penghasilan_ortu' => 'Cukup',
-        // ];
-        // $hasil = $tree->classify($testingData);
-        // \dd($hasil);
-        $siswa = Siswa::query()->get();
-        return \view('siswa.index', \compact('siswa'));
-        // if (Auth::check()) {
-        //     # code...
-        // } else {
-        //     return \redirect()->route('login')->with(['msg' => 'anda harus login!!']);
-        // }
+        if (Auth::check()) {
+            $siswa = Siswa::query()->get();
+            return \view('siswa.index', \compact('siswa'));
+        } else {
+            return \redirect()->route('login')->with(['msg' => 'anda harus login!!']);
+        }
     }
 
     /**
@@ -53,7 +32,11 @@ class SiswaController extends Controller
      */
     public function create()
     {
-        return \view('siswa.create');
+        if (Auth::check()) {
+            return \view('siswa.create');
+        } else {
+            return \redirect()->route('login')->with(['msg' => 'anda harus login!!']);
+        }
     }
 
     /**
@@ -64,80 +47,63 @@ class SiswaController extends Controller
      */
     public function store(Request $req)
     {
-        $this->validate($req, [
-            'nama' => 'required',
-            'nisn' => 'required|unique:siswas',
-            'jenis_kelamin' => 'required',
-            'kelas' => 'required',
-            'alamat' => 'required',
-            'penghasilan_ortu' => 'required',
-            'penerima_kks' => 'required',
-            'r_mtk' => 'required',
-            'r_bindo' => 'required',
-            'r_bing' => 'required',
-            'r_mapel_produktif' => 'required',
-        ]);
-        // \dd($req->all());
-        $filename = \public_path() . '/csv/Data_Training.csv'; //DATA TRAINING
-        // \dd($filename);
-        $c45 = new C45AJA([
-            'targetAttribute' => 'beasiswa',
-            'trainingFile' => $filename,
-            'splitCriterion' => C45AJA::SPLIT_GAIN,
-        ]);
-        $tree = $c45->buildTree();
-        $treeString = $tree->toString();
-        $data = [
-            // Tidak,B+,B+,B+,B+,Cukup,Tidak
-            'penerima_kks' => \strtolower($req->penerima_kks),
-            'r_mtk' => \strtoupper($req->r_mtk),
-            'r_bindo' => \strtoupper($req->r_bindo),
-            'r_bing' => \strtoupper($req->r_bing),
-            'r_mapel_produktif' => \strtoupper($req->r_mapel_produktif),
-            'penghasilan_ortu' => \strtolower($req->penghasilan_ortu),
-        ];
-        // \dd($testingData);
-
-        $hasil = $tree->classify($data);
-
-        // $filename = \public_path() . '/csv/Data_Training.csv';
-        // // \dd($filename);
-        // $c45 = new C45AJA([
-        //     'targetAttribute' => 'beasiswa',
-        //     'trainingFile' => $filename,
-        //     'splitCriterion' => C45AJA::SPLIT_GAIN,
-        // ]);
-        // $tree = $c45->buildTree();
-        // $treeString = $tree->toString();
-        // $testingData = [
-        //     // Tidak,B+,B+,B+,B+,Cukup,Tidak
-        //     'penerima_kks' => 'tidak punya',
-        //     'r_mtk' => 'B',
-        //     'b_indo' => 'B',
-        //     'b_ing' => 'B+',
-        //     'r_mapel_produktif' => 'B',
-        //     'penghasilan_ortu' => 'Cukup',
-        // ];
-        // $hasil2 = $tree->classify($testingData);
-        // \dd($hasil, $hasil2);
-        $siswa = Siswa::create([
-            'nama' => $req->nama,
-            'nisn' => $req->nisn,
-            'jenis_kelamin' => $req->jenis_kelamin,
-            'kelas' => \strtoupper($req->kelas),
-            'alamat' => $req->alamat,
-            'penghasilan_ortu' => \strtolower($req->penghasilan_ortu),
-            'penerima_kks' => \strtolower($req->penerima_kks),
-            'beasiswa' => $hasil,
-        ]);
-        Nilai::create([
-            'siswa_id' => $siswa->id,
-            'r_mtk' => \strtoupper($req->r_mtk),
-            'r_bindo' => \strtoupper($req->r_bindo),
-            'r_bing' => \strtoupper($req->r_bing),
-            'r_mapel_produktif' => \strtoupper($req->r_mapel_produktif),
-        ]);
-        return \redirect()->route('siswa.index')->with(['msg' => "Berhasil menambah data siswa, nama: $req->nama dengan nisn : $req->nisn"]);
+        if (Auth::check()) {
+            $this->validate($req, [
+                'nama' => 'required',
+                'nisn' => 'required|unique:siswas',
+                'jenis_kelamin' => 'required',
+                'kelas' => 'required',
+                'alamat' => 'required',
+                'penghasilan_ortu' => 'required',
+                'penerima_kks' => 'required',
+                'r_mtk' => 'required',
+                'r_bindo' => 'required',
+                'r_bing' => 'required',
+                'r_mapel_produktif' => 'required',
+            ]);
+            // \dd($req->all());
+            $filename = \public_path() . '/csv/Data_Training.csv'; //DATA TRAINING
+            // \dd($filename);
+            $c45 = new C45AJA([
+                'targetAttribute' => 'beasiswa',
+                'trainingFile' => $filename,
+                'splitCriterion' => C45AJA::SPLIT_GAIN,
+            ]);
+            $tree = $c45->buildTree();
+            $treeString = $tree->toString();
+            $data = [
+                // Tidak,B+,B+,B+,B+,Cukup,Tidak
+                'penerima_kks' => \strtolower($req->penerima_kks),
+                'r_mtk' => \strtoupper($req->r_mtk),
+                'r_bindo' => \strtoupper($req->r_bindo),
+                'r_bing' => \strtoupper($req->r_bing),
+                'r_mapel_produktif' => \strtoupper($req->r_mapel_produktif),
+                'penghasilan_ortu' => \strtolower($req->penghasilan_ortu),
+            ];
+            // \dd($testingData);
+    
+            $hasil = $tree->classify($data);
+            $siswa = Siswa::create([
+                'nama' => $req->nama,
+                'nisn' => $req->nisn,
+                'jenis_kelamin' => $req->jenis_kelamin,
+                'kelas' => \strtoupper($req->kelas),
+                'alamat' => $req->alamat,
+                'penghasilan_ortu' => \strtolower($req->penghasilan_ortu),
+                'penerima_kks' => \strtolower($req->penerima_kks),
+                'beasiswa' => $hasil,
+            ]);
+            Nilai::create([
+                'siswa_id' => $siswa->id,
+                'r_mtk' => \strtoupper($req->r_mtk),
+                'r_bindo' => \strtoupper($req->r_bindo),
+                'r_bing' => \strtoupper($req->r_bing),
+                'r_mapel_produktif' => \strtoupper($req->r_mapel_produktif),
+            ]);
+            return \redirect()->route('siswa.index')->with(['msg' => "Berhasil menambah data siswa, nama: $req->nama dengan nisn : $req->nisn"]);
+        } else {
+            return \redirect()->route('login')->with(['msg' => 'anda harus login!!']);
+        }
     }
 
     /**
@@ -148,8 +114,12 @@ class SiswaController extends Controller
      */
     public function edit($id)
     {
-        $siswa = Siswa::find($id);
-        return \view('siswa.edit', \compact('siswa'));
+        if (Auth::check()) {
+            $siswa = Siswa::find($id);
+            return \view('siswa.edit', \compact('siswa'));
+        } else {
+            return \redirect()->route('login')->with(['msg' => 'anda harus login!!']);
+        }
     }
 
     /**
@@ -161,47 +131,51 @@ class SiswaController extends Controller
      */
     public function update(Request $req, $id)
     {
-        $this->validate($req, [
-            'nama' => 'required',
-            'nisn' => 'required',
-            'jenis_kelamin' => 'required',
-            'kelas' => 'required',
-            'alamat' => 'required',
-            'penghasilan_ortu' => 'required',
-            'penerima_kks' => 'required',
-        ]);
-        $filename = \public_path() . '/csv/Data_Training.csv';
-        // \dd($filename);
-        $c45 = new C45AJA([
-            'targetAttribute' => 'beasiswa',
-            'trainingFile' => $filename,
-            'splitCriterion' => C45AJA::SPLIT_GAIN,
-        ]);
-        $tree = $c45->buildTree();
-        $treeString = $tree->toString();
-        $data = [
-            // Tidak,B+,B+,B+,B+,Cukup,Tidak
-            'penerima_kks' => \strtolower($req->penerima_kks),
-            'r_mtk' => \strtoupper($req->r_mtk),
-            'r_bindo' => \strtoupper($req->r_bindo),
-            'r_bing' => \strtoupper($req->r_bing),
-            'r_mapel_produktif' => \strtoupper($req->r_mapel_produktif),
-            'penghasilan_ortu' => \strtolower($req->penghasilan_ortu),
-        ];
-        // \dd($testingData);
-        $hasil = $tree->classify($data);
-        // \dd($hasil);
-        $siswa = Siswa::find($id);
-        $siswa->nama = $req->nama;
-        $siswa->nisn = $req->nisn;
-        $siswa->jenis_kelamin = $req->jenis_kelamin;
-        $siswa->kelas = \strtoupper($req->kelas);
-        $siswa->alamat = $req->alamat;
-        $siswa->penghasilan_ortu = \strtolower($req->penghasilan_ortu);
-        $siswa->penerima_kks = \strtolower($req->penerima_kks);
-        $siswa->beasiswa = $hasil;
-        $siswa->save();
-        return \redirect()->route('siswa.index')->with(['msg' => "Berhasil merubah data siswa $req->nama"]);
+        if (Auth::check()) {
+            $this->validate($req, [
+                'nama' => 'required',
+                'nisn' => 'required',
+                'jenis_kelamin' => 'required',
+                'kelas' => 'required',
+                'alamat' => 'required',
+                'penghasilan_ortu' => 'required',
+                'penerima_kks' => 'required',
+            ]);
+            $filename = \public_path() . '/csv/Data_Training.csv';
+            // \dd($filename);
+            $c45 = new C45AJA([
+                'targetAttribute' => 'beasiswa',
+                'trainingFile' => $filename,
+                'splitCriterion' => C45AJA::SPLIT_GAIN,
+            ]);
+            $tree = $c45->buildTree();
+            $treeString = $tree->toString();
+            $data = [
+                // Tidak,B+,B+,B+,B+,Cukup,Tidak
+                'penerima_kks' => \strtolower($req->penerima_kks),
+                'r_mtk' => \strtoupper($req->r_mtk),
+                'r_bindo' => \strtoupper($req->r_bindo),
+                'r_bing' => \strtoupper($req->r_bing),
+                'r_mapel_produktif' => \strtoupper($req->r_mapel_produktif),
+                'penghasilan_ortu' => \strtolower($req->penghasilan_ortu),
+            ];
+            // \dd($testingData);
+            $hasil = $tree->classify($data);
+            // \dd($hasil);
+            $siswa = Siswa::find($id);
+            $siswa->nama = $req->nama;
+            $siswa->nisn = $req->nisn;
+            $siswa->jenis_kelamin = $req->jenis_kelamin;
+            $siswa->kelas = \strtoupper($req->kelas);
+            $siswa->alamat = $req->alamat;
+            $siswa->penghasilan_ortu = \strtolower($req->penghasilan_ortu);
+            $siswa->penerima_kks = \strtolower($req->penerima_kks);
+            $siswa->beasiswa = $hasil;
+            $siswa->save();
+            return \redirect()->route('siswa.index')->with(['msg' => "Berhasil merubah data siswa $req->nama"]);
+        } else {
+            return \redirect()->route('login')->with(['msg' => 'anda harus login!!']);
+        }
     }
 
     /**
@@ -212,8 +186,12 @@ class SiswaController extends Controller
      */
     public function destroy($id)
     {
-        $siswa = Siswa::find($id);
-        $siswa->delete();
-        return \redirect()->back()->with(['msg' => "berhasil menghapus data siswa $siswa->nama"]);
+        if (Auth::check()) {
+            $siswa = Siswa::find($id);
+            $siswa->delete();
+            return \redirect()->back()->with(['msg' => "berhasil menghapus data siswa $siswa->nama"]);
+        } else {
+            return \redirect()->route('login')->with(['msg' => 'anda harus login!!']);
+        }
     }
 }

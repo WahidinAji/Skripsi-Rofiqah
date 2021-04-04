@@ -45,14 +45,14 @@
                             <div class="col-sm-9 @error('jenis_kelamin') is-invalid @enderror">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="jenis_kelamin" id="gridRadios1"
-                                        value="l" checked>
+                                        value="l" {{ $siswa->jenis_kelamin == 'l' ? 'checked' : null}}>
                                     <label class="form-check-label" for="gridRadios1">
                                         Laki - laki
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="jenis_kelamin" id="gridRadios2"
-                                        value="p">
+                                        value="p" {{ $siswa->jenis_kelamin == 'p' ? 'checked' : null}}>
                                     <label class="form-check-label" for="gridRadios2">
                                         Perempuan
                                     </label>
@@ -66,14 +66,14 @@
                             <div class="col-sm-9 @error('penerima_kks') is-invalid @enderror">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="penerima_kks" id="penerima_kks1"
-                                        value="punya" checked>
+                                        value="punya" {{$siswa->penerima_kks == 'punya' ? 'checked' : null}}>
                                     <label class="form-check-label" for="penerima_kks1">
                                         Punya
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="penerima_kks" id="penerima_kks2"
-                                        value="tidak punya">
+                                        value="tidak punya" {{$siswa->penerima_kks == 'tidak punya' ? 'checked' : null}}>
                                     <label class="form-check-label" for="penerima_kks2">
                                         Tidak punya
                                     </label>
@@ -86,7 +86,10 @@
                         <div class="col-sm-9">
                             <select class="form-control @error('penghasilan_ortu') is-invalid @enderror" id="inputpot" name="penghasilan_ortu">
                                 <option disable>pilih kategori</option>
-                                <option value="{{$siswa->penghasilan_ortu}}" {{$siswa->penghasilan_ortu ? 'selected' : null}}>{{$siswa->penghasilan_ortu}}</option>
+                                <option value="rendah" {{$siswa->penghasilan_ortu == 'rendah' ? 'selected' : null}}>Rendah</option>
+                                <option value="cukup" {{$siswa->penghasilan_ortu == 'cukup' ? 'selected' : null}}>Cukup</option>
+                                <option value="rata-rata" {{$siswa->penghasilan_ortu == 'rata-rata'  ? 'selected' : null}}>Rata - rata</option>
+                                <option value="tinggi" {{$siswa->penghasilan_ortu == 'tinggi' ? 'selected' : null}}>Tinggi</option>
                             </select>
                         </div>
                     </div>

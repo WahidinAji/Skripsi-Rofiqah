@@ -5,7 +5,7 @@
         <div class="card mb-4 mt-4">
             <div class="card-header">
                 <i class="fas fa-table mr-1"></i>
-                Form buat data siswa
+                Form tambah data siswa
             </div>
             <div class="card-body">
                 <form action="{{ URL::route('siswa.store') }}" method="POST">
@@ -124,6 +124,9 @@
                         <div class="col-sm-10">
                             <button type="submit" class="btn btn-primary">Simpan</button>
                             <a href="{{ URL::route('siswa.index') }}" class="btn btn-warning">Batal</a>
+                        </div>
+                        <div class="col-sm-2 text-right">
+                            <button class="btn btn-primary">Import</button>
                         </div>
                     </div>
                 </form>

@@ -167,9 +167,10 @@ class StudentController extends Controller
      * @param  \App\Model\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Student $student)
+    public function destroy($id)
     {
-        $student->delete();
-        return \redirect()->back()->with(['msg' => "berhasil menghapus data siswa $student->nama"]);
+        $siswa = Student::findOrFail($id);
+        $siswa->delete();
+        return \redirect()->back()->with(['msg' => "berhasil menghapus data siswa $siswa->nama"]);
     }
 }

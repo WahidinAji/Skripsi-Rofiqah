@@ -16,17 +16,17 @@ class StudentImport implements ToModel
     public function model(array $row)
     {
         $student = new Student();
-        $student->nama = $row[0];
-        $student->nisn = $row[1];
-        $student->jenis_kelamin = $row[2];
-        $student->kelas = $row[3];
-        $student->alamat = $row[4];
-        $student->penghasilan_ortu = $row[5];
-        $student->penerima_kks = $row[6];
-        $student->r_mtk = $row[7];
-        $student->r_bindo = $row[8];
-        $student->r_bing = $row[9];
-        $student->r_mapel_produktif = $row[10];
+        $student->nama = $row[0]; //kolom 1
+        $student->nisn = $row[1]; //kolom 2
+        $student->jenis_kelamin = $row[2]; //kolom 3
+        $student->kelas = $row[3]; //kolom 4
+        $student->alamat = $row[4]; //kolom 5
+        $student->penerima_kks = $row[5]; //kolom 6
+        $student->r_mtk = $row[6]; //kolom 7
+        $student->r_bindo = $row[7]; //kolom 8
+        $student->r_bing = $row[8]; //kolom 9
+        $student->r_mapel_produktif = $row[9]; //kolom 10
+        $student->penghasilan_ortu = $row[10]; //kolom 11
 
         $filename = \public_path() . '/csv/Data_Training.csv'; //DATA TRAINING
         $c45 = new C45([

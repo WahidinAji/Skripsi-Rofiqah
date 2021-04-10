@@ -26,7 +26,6 @@ Route::resource('siswa', 'StudentController');
 Route::resource('nilai', 'NilaiController');
 Route::get('status-beasiswa', 'BeasiswaController@index')->name('status.index');
 Route::get('pdf', 'BeasiswaController@export_pdf')->name('pdf');
-
-
-Route::resource('value', 'ValueController');
-Route::post('import', 'ImportValue')->name('import');
+Route::namespace('Import')->group(function () {
+    Route::post('import', 'DataImport')->name('import');
+});

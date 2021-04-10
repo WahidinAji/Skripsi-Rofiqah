@@ -62,10 +62,6 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Status Beasiswa
                         </a>
-                        <a class="nav-link {{ Request::url() == url('value') ? 'active' : null }}" href="{{URL::route('value.index')}}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Value Beasiswa
-                        </a>
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">

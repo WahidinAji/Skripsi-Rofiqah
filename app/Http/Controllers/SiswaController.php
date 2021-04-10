@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\BeasiswaImport;
 use App\Model\Nilai;
 use App\Model\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use C45\C45 as C45AJA;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SiswaController extends Controller
 {
@@ -17,6 +21,7 @@ class SiswaController extends Controller
      */
     public function index()
     {
+        // $last = DB::table('siswas')->orderBy('id', 'DESC')->first();
         if (Auth::check()) {
             $siswa = Siswa::query()->get();
             return \view('siswa.index', \compact('siswa'));
@@ -81,7 +86,7 @@ class SiswaController extends Controller
                 'penghasilan_ortu' => \strtolower($req->penghasilan_ortu),
             ];
             // \dd($testingData);
-    
+
             $hasil = $tree->classify($data);
             $siswa = Siswa::create([
                 'nama' => $req->nama,

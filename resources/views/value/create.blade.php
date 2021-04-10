@@ -9,7 +9,7 @@
             </div>
             <div class="card-body">
                 <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Import</button>
-                <form action="{{ URL::route('siswa.store') }}" method="POST">
+                <form action="{{ URL::route('value.store') }}" method="POST">
                     {{ csrf_field() }}
                     <h3 class="mb-3"><strong>Data siswa</strong></h3>
                     <div class="form-group row">

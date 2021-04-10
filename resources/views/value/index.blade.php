@@ -85,7 +85,7 @@
                             @endforelse
                         </tbody>
                     </table>
-                    <a href="{{ URL::route('siswa.create') }}" class="btn btn-primary">Tambah</a>
+                    <a href="{{ URL::route('value.create') }}" class="btn btn-primary">Tambah</a>
                 </div>
             </div>
         </div>

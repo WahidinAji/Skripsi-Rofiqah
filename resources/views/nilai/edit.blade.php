@@ -5,9 +5,7 @@
         <div class="card mb-4 mt-4">
             <div class="card-header">
                 <i class="fas fa-table mr-1"></i>
-                @foreach($s as $siswa)
-                Form edit data nilai siswa {{ $siswa->nama }}
-                @endforeach
+                Form edit data nilai siswa {{ $nilai->nama }}
             </div>
             <div class="card-body">
                 <form action="{{ URL::route('nilai.update',$nilai->id) }}" method="POST">

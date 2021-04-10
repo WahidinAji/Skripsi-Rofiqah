@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Model\Nilai;
 use App\Model\Siswa;
+use App\Model\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -19,10 +20,7 @@ class NilaiController extends Controller
     public function index()
     {
         if (Auth::check()) {
-            $s = DB::table('siswas')
-                ->join('nilais', 'siswas.id', '=', 'nilais.siswa_id')
-                ->select('siswas.nama', 'siswas.nisn', 'nilais.*')->get();
-            // $nilai = Nilai::where('siswa_id', $s->id);
+            $s = Student::all();
             return \view('nilai.index', \compact('s'));
         } else {
             return \redirect()->route('login')->with(['msg' => 'anda harus login!!']);
@@ -38,13 +36,8 @@ class NilaiController extends Controller
     public function edit($id)
     {
         if (Auth::check()) {
-            $nilai = Nilai::find($id);
-            $s = DB::table('siswas')
-                ->join('nilais', 'siswas.id', '=', 'nilais.siswa_id')
-                ->select('siswas.nama', 'siswas.nisn', 'nilais.*')
-                ->where('nilais.id',$nilai->id)
-                ->get();
-            return view('nilai.edit',compact('nilai','s'));
+            $nilai = Student::findOrFail($id);
+            return view('nilai.edit', compact('nilai'));
         } else {
             return \redirect()->route('login')->with(['msg' => 'anda harus login!!']);
         }
@@ -60,22 +53,14 @@ class NilaiController extends Controller
     public function update(Request $req, $id)
     {
         if (Auth::check()) {
-            $this->validate($req,[
-                'r_mtk'=>'required',
-                'r_bindo'=>'required',
-                'r_bing'=>'required',
-                'r_mapel_produktif'=>'required',
+            $this->validate($req, [
+                'r_mtk' => 'required',
+                'r_bindo' => 'required',
+                'r_bing' => 'required',
+                'r_mapel_produktif' => 'required',
             ]);
-    
-            $nilai = Nilai::find($id);
-            $s = DB::table('siswas')
-                ->join('nilais', 'siswas.id', '=', 'nilais.siswa_id')
-                ->select('siswas.nama', 'siswas.nisn', 'nilais.*')
-                ->where('nilais.id',$nilai->id)
-                ->get();
-            foreach($s as $siswa){
-                $siswa = Siswa::find($siswa->id);
-            }     
+
+            $nilai = Student::find($id);
             $filename = \public_path() . '/csv/Data_Training.csv'; //DATA TRAINING
             // \dd($filename);
             $c45 = new C45AJA([
@@ -86,27 +71,21 @@ class NilaiController extends Controller
             $tree = $c45->buildTree();
             $treeString = $tree->toString();
             $data = [
-                'penerima_kks'=>\strtolower($siswa->penerima_kks),
+                'penerima_kks' => \strtolower($nilai->penerima_kks),
                 'r_mtk' => \strtoupper($req->r_mtk),
                 'r_bindo' => \strtoupper($req->r_bindo),
                 'r_bing' => \strtoupper($req->r_bing),
                 'r_mapel_produktif' => \strtoupper($req->r_mapel_produktif),
-                'penghasilan_ortu' => \strtolower($siswa->penghasilan_ortu),
+                'penghasilan_ortu' => \strtolower($nilai->penghasilan_ortu),
             ];
-            // \dd($data);
             $hasil = $tree->classify($data);
-            // dd($hasil);
-            //save update beasiswa on table siswas           
-            $siswa->beasiswa = $hasil;
-            $siswa->save();
-    
-            //update field on table nilais
+            $nilai->beasiswa = $hasil;
             $nilai->r_mtk = \strtoupper($req->r_mtk);
             $nilai->r_bindo = \strtoupper($req->r_bindo);
             $nilai->r_bing = \strtoupper($req->r_bing);
             $nilai->r_mapel_produktif = \strtoupper($req->r_mapel_produktif);
             $nilai->save();
-            return redirect()->route('nilai.index')->with(['msg'=>"Berhasil merubah nilai"]);
+            return redirect()->route('nilai.index')->with(['msg' => "Berhasil merubah nilai"]);
         } else {
             return \redirect()->route('login')->with(['msg' => 'anda harus login!!']);
         }

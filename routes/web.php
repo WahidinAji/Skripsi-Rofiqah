@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +22,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('siswa', 'SiswaController');
+Route::resource('siswa', 'StudentController');
 Route::resource('nilai', 'NilaiController');
-Route::get('status-beasiswa','BeasiswaController@index')->name('status.index');
-Route::get('pdf','BeasiswaController@export_pdf')->name('pdf');
+Route::get('status-beasiswa', 'BeasiswaController@index')->name('status.index');
+Route::get('pdf', 'BeasiswaController@export_pdf')->name('pdf');
+
+
+Route::resource('value', 'ValueController');
+Route::post('import', 'ImportValue')->name('import');

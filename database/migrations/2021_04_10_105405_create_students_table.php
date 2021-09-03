@@ -16,7 +16,7 @@ class CreateStudentsTable extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->unsignedInteger('nisn')->unique();
+            $table->unsignedBigInteger('nisn')->unique();
             $table->enum('jenis_kelamin', ['p', 'l']);
             $table->string('kelas');
             $table->string('alamat');

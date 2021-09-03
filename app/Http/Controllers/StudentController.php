@@ -39,7 +39,7 @@ class StudentController extends Controller
     {
         $this->validate($req, [
             'nama' => 'required',
-            'nisn' => 'required|unique:siswas',
+            'nisn' => 'required|numeric|unique:students',
             'jenis_kelamin' => 'required',
             'kelas' => 'required',
             'alamat' => 'required',
@@ -120,7 +120,7 @@ class StudentController extends Controller
     {
         $this->validate($req, [
             'nama' => 'required',
-            'nisn' => 'required',
+            'nisn' => 'required|numeric',
             'jenis_kelamin' => 'required',
             'kelas' => 'required',
             'alamat' => 'required',
